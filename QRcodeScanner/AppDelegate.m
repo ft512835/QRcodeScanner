@@ -7,16 +7,40 @@
 //
 
 #import "AppDelegate.h"
+#import "LoginViewController.h"
 
 @implementation AppDelegate
+@synthesize navigationController;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    
+     //[PayPalMobile initializeWithClientIdsForEnvironments:@{PayPalEnvironmentProduction : @"AXAGGxCaG-jhN9lX6GPIJLhrQ80JJSKtRKcMaT48d09S6avoV5lfAwbXcnN3"}];
+    LoginViewController *Regestration=[[LoginViewController alloc]initWithNibName:@"LoginViewController" bundle:Nil];
+    navigationController=[[UINavigationController alloc]initWithRootViewController:Regestration];
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"Untitled-5.png"] forBarMetrics:UIBarMetricsDefault];
+     self.window.rootViewController=navigationController;
+    navigationController.navigationBar.tintColor = [UIColor whiteColor];
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
+    
     [self.window makeKeyAndVisible];
     return YES;
+}
+
+- (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
+{
+    NSString* apnsDeviceToken = [[deviceToken description] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
+    apnsDeviceToken  = [apnsDeviceToken stringByReplacingOccurrencesOfString:@" " withString:@""];
+    
+    NSLog(@"My token is: %@", apnsDeviceToken);
+    // [[[UIAlertView alloc]initWithTitle:nil message:apnsDeviceToken delegate:nil cancelButtonTitle:@"Ol" otherButtonTitles:nil, nil]show];
+}
+
+- (void)application:(UIApplication*)application didFailToRegisterForRemoteNotificationsWithError:(NSError*)error
+{
+	NSLog(@"Failed to get token, error: %@", error);
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
